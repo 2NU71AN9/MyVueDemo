@@ -43,11 +43,7 @@ export default {
     return {
       loginForm: {
         username: 'admin',
-        password: 'dakj2020',
-        client_id: 'webApp',
-        client_secret: 'webApp',
-        grant_type: 'password',
-        scope: 'app',
+        password: '123456',
       },
       loginRules: {
         username: [
@@ -81,10 +77,7 @@ export default {
         this.$http.post(api.login, this.loginForm).then(
           (response) => {
             this.$message.success('登录成功')
-            window.sessionStorage.setItem(
-              'token',
-              'ae79ac27-3850-4876-9138-d039b6f539b6'
-            )
+            window.sessionStorage.setItem('token', response.data.data.token)
             this.$router.push('/home')
           },
           (error) => {
