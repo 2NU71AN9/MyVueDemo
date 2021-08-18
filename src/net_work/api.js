@@ -5,5 +5,7 @@ export default {
     users: '/api/private/v1/users',
     userState: (id, state) => `/api/private/v1/users/${id}/state/${state}`,
     addUser: "/api/private/v1/users",
-    editUser: (id) => `/api/private/v1/users/${id}`
+    editUser: (id) => `/api/private/v1/users/${id}`,
+    rights: "/api/private/v1/rights/list",
+    roles: "/api/private/v1/roles",
 }
