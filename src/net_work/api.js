@@ -6,6 +6,9 @@ export default {
     userState: (id, state) => `/api/private/v1/users/${id}/state/${state}`,
     addUser: "/api/private/v1/users",
     editUser: (id) => `/api/private/v1/users/${id}`,
-    rights: "/api/private/v1/rights/list",
+    fenPeiRole: (userId) => `/api/private/v1/users/${userId}/role`,
+    rights: (isList) => `/api/private/v1/rights/${isList ? 'list' : 'tree'}`,
     roles: "/api/private/v1/roles",
+    removeRightById: (roleId, rightId) => `/api/private/v1/roles/${roleId}/rights/${rightId}`,
+    setRights: (roleId) => `/api/private/v1/roles/${roleId}/rights`
 }

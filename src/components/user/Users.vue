@@ -65,7 +65,7 @@
                 type="warning"
                 icon="el-icon-star-off"
                 size="small"
-                @click="collectUser(scope.row.id)"
+                @click="collectUser(scope.row)"
               ></el-button>
             </el-tooltip>
           </template>
@@ -139,6 +139,34 @@
         <el-button type="primary" @click="editUserAction">确 定</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog
+      title="分配角色"
+      :visible.sync="fenPeiDialog"
+      width="50%"
+      @close="fenPeiDialogClose"
+    >
+      <div>
+        <p>当前用户: {{ curFenPeiUser.username }}</p>
+        <p>当前角色: {{ curFenPeiUser.role_name }}</p>
+        <p>
+          分配新角色:
+          <el-select v-model="selectRole" placeholder="请选择">
+            <el-option
+              v-for="item in rolesArray"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+        </p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="fenPeiDialog = false">取 消</el-button>
+        <el-button type="primary" @click="fenPeiRole">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -160,6 +188,7 @@ export default {
     return {
       addUserDialog: false,
       editUserDialog: false,
+      fenPeiDialog: false,
       queryInfo: {
         query: '',
         pagenum: 1,
@@ -207,6 +236,9 @@ export default {
           { validator: checkMobile, trigger: 'blur' },
         ],
       },
+      curFenPeiUser: {},
+      rolesArray: [],
+      selectRole: '',
     }
   },
   created() {
@@ -247,8 +279,15 @@ export default {
         }
       )
     },
-    collectUser(id) {
-      console.log(id)
+    collectUser(user) {
+      this.curFenPeiUser = user
+      this.$http.get(api.roles).then(
+        (res) => {
+          this.rolesArray = res.data.data
+        },
+        (err) => {}
+      )
+      this.fenPeiDialog = true
     },
     handleSizeChange(size) {
       this.queryInfo.pagesize = size
@@ -301,6 +340,23 @@ export default {
     editUserDialogClose() {
       this.$refs.editUserFormRef.resetFields()
       this.editUserForm = {}
+    },
+    fenPeiDialogClose() {
+      this.curFenPeiUser = {}
+      this.selectRole = ''
+    },
+    fenPeiRole() {
+      if (!this.selectRole) return this.$message.error('请选择角色')
+      this.fenPeiDialog = false
+      this.$http
+        .put(api.fenPeiRole(this.curFenPeiUser.id), { rid: this.selectRole })
+        .then(
+          (res) => {
+            this.$message.success('分配角色成功!')
+            this.loadData()
+          },
+          (err) => {}
+        )
     },
   },
 }

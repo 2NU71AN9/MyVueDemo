@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     loadData() {
-      this.$http.get(api.rights).then(
+      this.$http.get(api.rights(true)).then(
         (res) => {
           this.dataArray = res.data.data
         },

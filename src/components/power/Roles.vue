@@ -16,7 +16,11 @@
               :key="item1.id"
             >
               <el-col :span="5">
-                <el-tag>{{ item1.authName }}</el-tag>
+                <el-tag
+                  closable
+                  @close="removeRightById(scope.row, item1.id)"
+                  >{{ item1.authName }}</el-tag
+                >
                 <i class="el-icon-caret-right"></i>
               </el-col>
               <el-col :span="19">
@@ -26,7 +30,12 @@
                   :key="item2.id"
                 >
                   <el-col :span="6">
-                    <el-tag type="success">{{ item2.authName }}</el-tag>
+                    <el-tag
+                      type="success"
+                      closable
+                      @close="removeRightById(scope.row, item2.id)"
+                      >{{ item2.authName }}</el-tag
+                    >
                     <i class="el-icon-caret-right"></i>
                   </el-col>
                   <el-col :span="18">
@@ -34,6 +43,8 @@
                       type="warning"
                       v-for="item3 in item2.children"
                       :key="item3.id"
+                      closable
+                      @close="removeRightById(scope.row, item3.id)"
                       >{{ item3.authName }}</el-tag
                     >
                   </el-col>
@@ -65,13 +76,34 @@
               type="warning"
               icon="el-icon-star-off"
               size="small"
-              @click="handlerFenpei(scope.row.id)"
+              @click="handlerFenpei(scope.row)"
               >分配权限</el-button
             >
           </template>
         </el-table-column>
       </el-table>
     </el-card>
+
+    <el-dialog
+      title="分配权限"
+      :visible.sync="fenPeiRightDialog"
+      width="50%"
+      @close="fenPeiRightDialogClose"
+    >
+      <el-tree
+        :data="rightList"
+        :props="defaultProps"
+        show-checkbox
+        node-key="id"
+        default-expand-all
+        :default-checked-keys="defCheckedKeys"
+        ref="treeRef"
+      ></el-tree>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="fenPeiRightDialog = false">取 消</el-button>
+        <el-button type="primary" @click="setRights">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -81,6 +113,14 @@ export default {
   data() {
     return {
       dataArray: [],
+      fenPeiRightDialog: false,
+      rightList: [],
+      defaultProps: {
+        children: 'children',
+        label: 'authName',
+      },
+      defCheckedKeys: [],
+      curFenPeiRoleId: '',
     }
   },
   created() {
@@ -90,7 +130,6 @@ export default {
     loadData() {
       this.$http.get(api.roles).then(
         (res) => {
-          console.log(res)
           this.dataArray = res.data.data
         },
         (err) => {}
@@ -98,7 +137,63 @@ export default {
     },
     handlerEdit(value) {},
     handlerDelete(value) {},
-    handlerFenpei(value) {},
+    handlerFenpei(node) {
+      this.$http.get(api.rights(false)).then(
+        (res) => {
+          this.rightList = res.data.data
+          this.getDefCheckedKeys(node, this.defCheckedKeys)
+          this.curFenPeiRoleId = node.id
+          this.fenPeiRightDialog = true
+        },
+        (err) => {}
+      )
+    },
+    async removeRightById(role, rightId) {
+      const result = await this.$confirm(
+        '此操作将永久删除该权限, 是否继续?',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
+      ).catch((err) => err)
+      if (result !== 'confirm') return
+      this.$http.delete(api.removeRightById(role.id, rightId)).then(
+        (res) => {
+          this.$message.success('删除成功')
+          role.children = res.data.data
+        },
+        (err) => {}
+      )
+    },
+    getDefCheckedKeys(node, array) {
+      if (!node.children || node.children.length == 0) {
+        return array.push(node.id)
+      }
+      node.children.forEach((node) => {
+        this.getDefCheckedKeys(node, array)
+      })
+    },
+    fenPeiRightDialogClose() {
+      this.defCheckedKeys = []
+      this.curFenPeiRoleId = ''
+    },
+    setRights() {
+      const keys = [
+        ...this.$refs.treeRef.getCheckedKeys(),
+        ...this.$refs.treeRef.getHalfCheckedKeys(),
+      ].join(',')
+      console.log(keys)
+      this.$http.post(api.setRights(this.curFenPeiRoleId), { rids: keys }).then(
+        (res) => {
+          this.$message.success('分配权限成功!')
+          this.fenPeiRightDialog = false
+          this.loadData()
+        },
+        (err) => {}
+      )
+    },
   },
 }
 </script>
