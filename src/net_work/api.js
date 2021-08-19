@@ -13,4 +13,7 @@ export default {
     setRights: (roleId) => `/api/private/v1/roles/${roleId}/rights`,
     cates: '/api/private/v1/categories',
     addCate: '/api/private/v1/categories',
+    params: (cateId) => `/api/private/v1/categories/${cateId}/attributes`,
+    addParam: (cateId) => `/api/private/v1/categories/${cateId}/attributes`,
+    editParam: (cateId, paramId) => `/api/private/v1/categories/${cateId}/attributes/${paramId}`,
 }
