@@ -10,5 +10,7 @@ export default {
     rights: (isList) => `/api/private/v1/rights/${isList ? 'list' : 'tree'}`,
     roles: "/api/private/v1/roles",
     removeRightById: (roleId, rightId) => `/api/private/v1/roles/${roleId}/rights/${rightId}`,
-    setRights: (roleId) => `/api/private/v1/roles/${roleId}/rights`
+    setRights: (roleId) => `/api/private/v1/roles/${roleId}/rights`,
+    cates: '/api/private/v1/categories',
+    addCate: '/api/private/v1/categories',
 }
