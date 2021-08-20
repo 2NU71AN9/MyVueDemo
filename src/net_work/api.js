@@ -16,4 +16,6 @@ export default {
     params: (cateId) => `/api/private/v1/categories/${cateId}/attributes`,
     addParam: (cateId) => `/api/private/v1/categories/${cateId}/attributes`,
     editParam: (cateId, paramId) => `/api/private/v1/categories/${cateId}/attributes/${paramId}`,
+    goodsList: "/api/private/v1/goods",
+    deleteGoods: (goodsId) => `/api/private/v1/goods/${goodsId}`,
 }

@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import Moment from 'moment'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -12,6 +13,9 @@ Vue.config.productionTip = false
 Vue.prototype.$http = request
 
 Vue.component('tree-table', TreeTable)
+Vue.filter('formatDate', function(value) {
+    return Moment(value).format('YYYY-MM-DD HH:mm:ss')
+})
 
 new Vue({
     router,
