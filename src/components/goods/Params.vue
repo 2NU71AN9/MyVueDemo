@@ -41,25 +41,27 @@
                   v-for="(val, index) in scope.row.attr_vals"
                   :key="index"
                   closable=""
+                  @close="handleClose(scope.row, index)"
                   >{{ val }}
                 </el-tag>
                 <el-input
                   class="input-new-tag"
-                  v-if="inputVisible"
-                  v-model="inputValue"
+                  v-if="scope.row.inputVisible"
+                  v-model="scope.row.inputValue"
                   ref="saveTagInput"
                   size="small"
-                  @keyup.enter.native="handleInputConfirm"
-                  @blur="handleInputConfirm"
+                  @keyup.enter.native="handleInputConfirm(scope.row)"
+                  @blur="handleInputConfirm(scope.row)"
                 >
                 </el-input>
                 <el-button
                   v-else
                   class="button-new-tag"
                   size="small"
-                  @click="showInput"
-                  >+ New Tag</el-button
+                  @click="showInput(scope.row)"
                 >
+                  + New Tag
+                </el-button>
               </template>
             </el-table-column>
             <el-table-column type="index" label="#"> </el-table-column>
@@ -90,7 +92,35 @@
             >添加属性</el-button
           >
           <el-table :data="paramArray" border stripe>
-            <el-table-column type="expand"> </el-table-column>
+            <el-table-column type="expand">
+              <template v-slot="scope">
+                <el-tag
+                  v-for="(val, index) in scope.row.attr_vals"
+                  :key="index"
+                  closable=""
+                  @close="handleClose(scope.row, index)"
+                  >{{ val }}
+                </el-tag>
+                <el-input
+                  class="input-new-tag"
+                  v-if="scope.row.inputVisible"
+                  v-model="scope.row.inputValue"
+                  ref="saveTagInput"
+                  size="small"
+                  @keyup.enter.native="handleInputConfirm(scope.row)"
+                  @blur="handleInputConfirm(scope.row)"
+                >
+                </el-input>
+                <el-button
+                  v-else
+                  class="button-new-tag"
+                  size="small"
+                  @click="showInput(scope.row)"
+                >
+                  + New Tag
+                </el-button>
+              </template>
+            </el-table-column>
             <el-table-column type="index" label="#"> </el-table-column>
             <el-table-column prop="attr_name" label="属性名称">
             </el-table-column>
@@ -172,8 +202,6 @@ export default {
           },
         ],
       },
-      inputVisible: false,
-      inputValue: '',
     }
   },
   created() {
@@ -196,14 +224,21 @@ export default {
           (res) => {
             res.data.data.forEach((item) => {
               item.attr_vals = item.attr_vals ? item.attr_vals.split(' ') : []
+              item.inputVisible = false
+              item.inputValue = ''
             })
             this.paramArray = res.data.data
+            console.log(this.paramArray)
           },
           (err) => {}
         )
     },
     cateChanged() {
-      if (this.selectCates.length != 3) return (this.selectCates = [])
+      if (this.selectCates.length != 3) {
+        this.paramArray = []
+        this.selectCates = []
+        return
+      }
       this.loadParams()
     },
     tabClick() {
@@ -270,19 +305,47 @@ export default {
       )
     },
 
-    showInput() {
-      this.inputVisible = true
+    showInput(item) {
+      item.inputVisible = true
       this.$nextTick((_) => {
         this.$refs.saveTagInput.$refs.input.focus()
       })
     },
 
-    handleInputConfirm() {
-      let inputValue = this.inputValue
+    handleInputConfirm(item) {
+      let inputValue = item.inputValue.trim()
       if (inputValue) {
+        item.attr_vals.push(inputValue)
+        this.$http
+          .put(api.editParam(this.selectCates[2], item.attr_id), {
+            attr_name: item.attr_name,
+            attr_sel: item.attr_sel,
+            attr_vals: item.attr_vals.join(' '),
+          })
+          .then(
+            (res) => {
+              this.$message.success('添加成功')
+            },
+            (err) => {}
+          )
       }
-      this.inputVisible = false
-      this.inputValue = ''
+      item.inputVisible = false
+      item.inputValue = ''
+    },
+    handleClose(item, index) {
+      item.attr_vals.splice(index, 1)
+      this.$http
+        .put(api.editParam(this.selectCates[2], item.attr_id), {
+          attr_name: item.attr_name,
+          attr_sel: item.attr_sel,
+          attr_vals: item.attr_vals.join(' '),
+        })
+        .then(
+          (res) => {
+            this.$message.success('删除成功')
+          },
+          (err) => {}
+        )
     },
   },
   computed: {
@@ -309,5 +372,8 @@ export default {
 }
 .el-tag {
   margin: 10px;
+}
+.input-new-tag {
+  width: 120px;
 }
 </style>
