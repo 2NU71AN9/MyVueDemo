@@ -19,4 +19,6 @@ export default {
     editParam: (cateId, paramId) => `/api/private/v1/categories/${cateId}/attributes/${paramId}`,
     goodsList: "/api/private/v1/goods",
     deleteGoods: (goodsId) => `/api/private/v1/goods/${goodsId}`,
+    order: "/api/private/v1/orders",
+    wuliu: (id) => `/api/private/v1/kuaidi/${id}`,
 }
