@@ -1,16 +1,19 @@
-import axios from "axios"
+import axios from 'axios'
 import api from './api'
+import NProgress from 'nprogress'
+// import 'nprogress/nprogress.css'
 
-let instance = axios.create({
+const instance = axios.create({
     baseURL: api.baseURL,
     withCredentials: false,
     headers: {
-        "content-type": "application/json;charset=UTF-8"
-    },
+        'content-type': 'application/json;charset=UTF-8'
+    }
 })
 
 // 添加请求拦截器
 instance.interceptors.request.use(config => {
+    NProgress.start()
     config.headers.Authorization = window.sessionStorage.getItem('token')
     return config
 }, error => {
@@ -19,26 +22,28 @@ instance.interceptors.request.use(config => {
 })
 
 // 添加响应拦截器
-// instance.interceptors.response.use(response => {
-//     let { data } = response
-//     return data
-// }, error => {
-//     let info = {}
-//     let { status, statusText, data } = error.response
-//     if (!error.response) {
-//         info = {
-//             code: 5000,
-//             msg: 'Network Error'
-//         }
-//     } else {
-//         // 此处整理错误信息格式
-//         info = {
-//             code: status,
-//             data: data,
-//             msg: statusText
-//         }
-//     }
-//     return Promise.reject(info)
-// })
+instance.interceptors.response.use(response => {
+    NProgress.done()
+    const { data } = response
+    return response
+}, error => {
+    NProgress.done()
+    let info = {}
+    const { status, statusText, data } = error.response
+    if (!error.response) {
+        info = {
+            code: 5000,
+            msg: 'Network Error'
+        }
+    } else {
+        // 此处整理错误信息格式
+        info = {
+            code: status,
+            data: data,
+            msg: statusText
+        }
+    }
+    return Promise.reject(info)
+})
 
 export default instance

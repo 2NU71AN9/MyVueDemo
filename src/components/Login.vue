@@ -77,7 +77,6 @@ export default {
         this.$http.post(api.login, this.loginForm).then(
           (response) => {
             this.$message.success('登录成功')
-            console.log(response.data.data.token)
             window.sessionStorage.setItem('token', response.data.data.token)
             this.$router.push('/home')
           },

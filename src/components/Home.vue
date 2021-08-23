@@ -52,21 +52,21 @@
 <script>
 import api from '../net_work/api'
 export default {
-  data() {
+  data () {
     return {
       isCollapse: false,
-      menuList: [],
+      menuList: []
     }
   },
-  created() {
+  created () {
     this.loadMenus()
   },
   methods: {
-    logout() {
+    logout () {
       window.sessionStorage.clear()
       this.$router.push('/login')
     },
-    loadMenus() {
+    loadMenus () {
       this.$http.get(api.menu).then(
         (res) => {
           this.menuList = res.data.data
@@ -74,10 +74,10 @@ export default {
         (error) => {}
       )
     },
-    toggleMenu() {
+    toggleMenu () {
       this.isCollapse = !this.isCollapse
-    },
-  },
+    }
+  }
 }
 </script>
 

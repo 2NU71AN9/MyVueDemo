@@ -71,22 +71,22 @@
 <script>
 import api from '../../net_work/api'
 export default {
-  data() {
+  data () {
     return {
       queryInfo: {
         query: '',
         pagenum: 1,
-        pagesize: 10,
+        pagesize: 10
       },
       totalNum: 0,
-      dataArray: [],
+      dataArray: []
     }
   },
-  created() {
+  created () {
     this.loadData()
   },
   methods: {
-    loadData() {
+    loadData () {
       this.$http.get(api.goodsList, { params: this.queryInfo }).then(
         (res) => {
           this.dataArray = res.data.data.goods
@@ -95,22 +95,22 @@ export default {
         (err) => {}
       )
     },
-    indexMethod(index) {
+    indexMethod (index) {
       return (this.queryInfo.pagenum - 1) * this.queryInfo.pagesize + index + 1
     },
-    handleSizeChange(size) {
+    handleSizeChange (size) {
       this.queryInfo.pagesize = size
       this.loadData()
     },
-    handleCurrentChange(page) {
+    handleCurrentChange (page) {
       this.queryInfo.pagenum = page
       this.loadData()
     },
-    addGoods() {
+    addGoods () {
       this.$router.push('/goods/add')
     },
-    editGoods(goods) {},
-    deleteGoods(goods) {
+    editGoods (goods) {},
+    deleteGoods (goods) {
       this.$http.delete(api.deleteGoods(goods.goods_id)).then(
         (res) => {
           this.$message.success('删除成功')
@@ -118,8 +118,8 @@ export default {
         },
         (err) => {}
       )
-    },
-  },
+    }
+  }
 }
 </script>
 

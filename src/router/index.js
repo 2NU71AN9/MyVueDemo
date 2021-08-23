@@ -16,52 +16,52 @@ import Report from '../components/report/Report'
 Vue.use(VueRouter)
 
 const routes = [{
-        path: "/",
-        redirect: "/login"
+        path: '/',
+        redirect: '/login'
     },
     {
-        path: "/login",
+        path: '/login',
         component: Login
     },
     {
-        path: "/home",
+        path: '/home',
         component: Home,
-        redirect: "/welcome",
+        redirect: '/welcome',
         children: [{
-                path: "/welcome",
+                path: '/welcome',
                 component: Welcome
             }, {
-                path: "/users",
+                path: '/users',
                 component: Users
             }, {
-                path: "/rights",
+                path: '/rights',
                 component: Rights
             }, {
-                path: "/roles",
+                path: '/roles',
                 component: Roles
             }, {
-                path: "/categories",
+                path: '/categories',
                 component: Cate
             }, {
-                path: "/params",
+                path: '/params',
                 component: Params
             },
             {
-                path: "/goods",
-                component: GoodsList,
+                path: '/goods',
+                component: GoodsList
             },
             {
-                path: "/goods/add",
+                path: '/goods/add',
                 component: GoodsAdd
             },
             {
-                path: "/orders",
+                path: '/orders',
                 component: Order
             },
             {
-                path: "/reports",
+                path: '/reports',
                 component: Report
-            },
+            }
         ]
     }
 ]
@@ -72,7 +72,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     if (to.path === '/login') return next()
-    const token = window.sessionStorage.getItem("token")
+    const token = window.sessionStorage.getItem('token')
     if (!token) return next('/login')
     next()
 })

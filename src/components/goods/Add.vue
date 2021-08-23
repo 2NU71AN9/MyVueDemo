@@ -232,15 +232,9 @@ export default {
     handlePreview() {},
     // 图片删除
     handleRemove() {},
-    onEditorBlur(quill) {
-      console.log('editor blur!', quill)
-    },
-    onEditorFocus(quill) {
-      console.log('editor focus!', quill)
-    },
-    onEditorReady(quill) {
-      console.log('editor ready!', quill)
-    },
+    onEditorBlur(quill) {},
+    onEditorFocus(quill) {},
+    onEditorReady(quill) {},
     // 添加商品
     addGoodsAction() {
       this.addGoodsForm.attrs = []
@@ -248,7 +242,7 @@ export default {
         if (!valid) {
           return this.$message.error('请补全信息')
         }
-        let form = _.cloneDeep(this.addGoodsForm)
+        const form = _.cloneDeep(this.addGoodsForm)
         form.goods_cat = form.goods_cat.join(',')
         this.manyTabData.forEach((item) => {
           this.addGoodsForm.attrs.push({

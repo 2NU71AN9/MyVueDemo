@@ -25,24 +25,24 @@
 <script>
 import api from '../../net_work/api'
 export default {
-  created() {
+  created () {
     this.loadData()
   },
-  data() {
+  data () {
     return {
-      dataArray: [],
+      dataArray: []
     }
   },
   methods: {
-    loadData() {
+    loadData () {
       this.$http.get(api.rights(true)).then(
         (res) => {
           this.dataArray = res.data.data
         },
         (err) => {}
       )
-    },
-  },
+    }
+  }
 }
 </script>
 

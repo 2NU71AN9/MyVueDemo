@@ -16,10 +16,10 @@ import * as echarts from 'echarts'
 import _ from 'lodash'
 import api from '../../net_work/api'
 export default {
-  data() {
+  data () {
     return {}
   },
-  mounted() {
+  mounted () {
     var myChart = echarts.init(document.getElementById('main'))
     this.$http.get(api.charts).then(
       (res) => {
@@ -29,7 +29,7 @@ export default {
       (err) => {}
     )
   },
-  methods: {},
+  methods: {}
 }
 </script>
 

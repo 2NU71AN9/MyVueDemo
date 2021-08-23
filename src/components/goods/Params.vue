@@ -228,7 +228,6 @@ export default {
               item.inputValue = ''
             })
             this.paramArray = res.data.data
-            console.log(this.paramArray)
           },
           (err) => {}
         )
@@ -279,7 +278,6 @@ export default {
             })
             .then(
               (res) => {
-                console.log(res)
                 this.editParamDialog = false
                 this.$message.success('修改成功')
                 this.loadParams()
@@ -313,7 +311,7 @@ export default {
     },
 
     handleInputConfirm(item) {
-      let inputValue = item.inputValue.trim()
+      const inputValue = item.inputValue.trim()
       if (inputValue) {
         item.attr_vals.push(inputValue)
         this.$http

@@ -184,7 +184,6 @@ export default {
         ...this.$refs.treeRef.getCheckedKeys(),
         ...this.$refs.treeRef.getHalfCheckedKeys(),
       ].join(',')
-      console.log(keys)
       this.$http.post(api.setRights(this.curFenPeiRoleId), { rids: keys }).then(
         (res) => {
           this.$message.success('分配权限成功!')

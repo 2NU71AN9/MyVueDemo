@@ -104,43 +104,43 @@
 <script>
 import api from '../../net_work/api'
 export default {
-  data() {
+  data () {
     return {
       addCateDialog: false,
       queryInfo: {
         pagenum: 1,
-        pagesize: 5,
+        pagesize: 5
       },
       totalNum: 0,
       dataArray: [''],
       columns: [
         {
           label: '分类名称',
-          prop: 'cat_name',
+          prop: 'cat_name'
         },
         {
           label: '是否有效',
           prop: 'cat_deleted',
           type: 'template',
-          template: 'isOK',
+          template: 'isOK'
         },
         {
           label: '排序',
           prop: 'cat_level',
           type: 'template',
-          template: 'sort',
+          template: 'sort'
         },
         {
           label: '操作',
           width: '185px',
           type: 'template',
-          template: 'caozuo',
-        },
+          template: 'caozuo'
+        }
       ],
       addCateForm: {
         cat_name: '',
         cat_pid: 0,
-        cat_level: 0,
+        cat_level: 0
       },
       addCateFormRules: {
         cat_name: [
@@ -149,27 +149,27 @@ export default {
             min: 4,
             max: 20,
             message: '长度在 4 到 20 个字符',
-            trigger: 'blur',
-          },
-        ],
+            trigger: 'blur'
+          }
+        ]
       },
       parentCates: [],
-      selectParentCates: [],
+      selectParentCates: []
     }
   },
-  created() {
+  created () {
     this.loadData()
   },
   methods: {
-    handleSizeChange(size) {
+    handleSizeChange (size) {
       this.queryInfo.pagesize = size
       this.loadData()
     },
-    handleCurrentChange(page) {
+    handleCurrentChange (page) {
       this.queryInfo.pagenum = page
       this.loadData()
     },
-    loadData() {
+    loadData () {
       this.$http.get(api.cates, { params: this.queryInfo }).then(
         (res) => {
           this.dataArray = res.data.data.result
@@ -179,7 +179,7 @@ export default {
       )
     },
     // 获取父级分类
-    getParentCate() {
+    getParentCate () {
       this.$http.get(api.cates, { params: { type: 2 } }).then(
         (res) => {
           this.parentCates = res.data.data
@@ -188,21 +188,21 @@ export default {
       )
     },
     // 添加分类
-    addCate() {
+    addCate () {
       this.getParentCate()
       this.addCateDialog = true
     },
     // 编辑
-    handlerEdit() {},
+    handlerEdit () {},
     // 删除
-    handlerDelete() {},
-    addCateDialogClose() {
+    handlerDelete () {},
+    addCateDialogClose () {
       this.$refs.addCateFormRef.resetFields()
       this.selectParentCates = []
       this.addCateForm.cat_pid = 0
       this.addCateForm.cat_level = 0
     },
-    addCateAction() {
+    addCateAction () {
       this.$refs.addCateFormRef.validate((valid) => {
         if (!valid) return
         this.$http.post(api.addCate, this.addCateForm).then(
@@ -215,7 +215,7 @@ export default {
         )
       })
     },
-    parentCateChanged() {
+    parentCateChanged () {
       if (this.selectParentCates.length > 0) {
         this.addCateForm.cat_pid =
           this.selectParentCates[this.selectParentCates.length - 1]
@@ -223,8 +223,8 @@ export default {
         this.addCateForm.cat_pid = 0
       }
       this.addCateForm.cat_level = this.selectParentCates.length
-    },
-  },
+    }
+  }
 }
 </script>
 

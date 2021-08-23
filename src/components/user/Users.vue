@@ -173,7 +173,7 @@
 <script>
 import api from '../../net_work/api'
 export default {
-  data() {
+  data () {
     var checkEmail = (rule, value, callback) => {
       const regEmail =
         /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/
@@ -192,7 +192,7 @@ export default {
       queryInfo: {
         query: '',
         pagenum: 1,
-        pagesize: 2,
+        pagesize: 2
       },
       totalNum: 0,
       userList: [],
@@ -204,8 +204,8 @@ export default {
             min: 4,
             max: 20,
             message: '长度在 4 到 20 个字符',
-            trigger: 'blur',
-          },
+            trigger: 'blur'
+          }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
@@ -213,39 +213,39 @@ export default {
             min: 4,
             max: 20,
             message: '长度在 4 到 20 个字符',
-            trigger: 'blur',
-          },
+            trigger: 'blur'
+          }
         ],
         email: [
           { required: true, message: '请输入邮箱', trigger: 'blur' },
-          { validator: checkEmail, trigger: 'blur' },
+          { validator: checkEmail, trigger: 'blur' }
         ],
         mobile: [
           { required: true, message: '请输入手机号', trigger: 'blur' },
-          { validator: checkMobile, trigger: 'blur' },
-        ],
+          { validator: checkMobile, trigger: 'blur' }
+        ]
       },
       editUserForm: {},
       editUserFormRules: {
         email: [
           { required: true, message: '请输入邮箱', trigger: 'blur' },
-          { validator: checkEmail, trigger: 'blur' },
+          { validator: checkEmail, trigger: 'blur' }
         ],
         mobile: [
           { required: true, message: '请输入手机号', trigger: 'blur' },
-          { validator: checkMobile, trigger: 'blur' },
-        ],
+          { validator: checkMobile, trigger: 'blur' }
+        ]
       },
       curFenPeiUser: {},
       rolesArray: [],
-      selectRole: '',
+      selectRole: ''
     }
   },
-  created() {
+  created () {
     this.loadData()
   },
   methods: {
-    loadData() {
+    loadData () {
       this.$http.get(api.users, { params: this.queryInfo }).then(
         (res) => {
           this.totalNum = res.data.data.total
@@ -254,18 +254,18 @@ export default {
         (error) => {}
       )
     },
-    editUser(user) {
+    editUser (user) {
       this.editUserForm = { ...user }
       this.editUserDialog = true
     },
-    async deleteUser(id) {
+    async deleteUser (id) {
       const result = await this.$confirm(
         '此操作将永久删除该用户, 是否继续?',
         '提示',
         {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning',
+          type: 'warning'
         }
       ).catch((err) => err)
       if (result !== 'confirm') return
@@ -279,7 +279,7 @@ export default {
         }
       )
     },
-    collectUser(user) {
+    collectUser (user) {
       this.curFenPeiUser = user
       this.$http.get(api.roles).then(
         (res) => {
@@ -289,15 +289,15 @@ export default {
       )
       this.fenPeiDialog = true
     },
-    handleSizeChange(size) {
+    handleSizeChange (size) {
       this.queryInfo.pagesize = size
       this.loadData()
     },
-    handleCurrentChange(page) {
+    handleCurrentChange (page) {
       this.queryInfo.pagenum = page
       this.loadData()
     },
-    stateChanged(user) {
+    stateChanged (user) {
       user.mg_state = !user.mg_state
       this.$http.put(api.userState(user.id, user.mg_state)).then(
         (res) => {
@@ -306,7 +306,7 @@ export default {
         (error) => {}
       )
     },
-    addUser() {
+    addUser () {
       this.$refs.addUserFormRef.validate((valid) => {
         if (!valid) return
         this.$http.post(api.addUser, this.addUserForm).then(
@@ -319,10 +319,10 @@ export default {
         )
       })
     },
-    addUserDialogClose() {
+    addUserDialogClose () {
       this.$refs.addUserFormRef.resetFields()
     },
-    editUserAction() {
+    editUserAction () {
       this.$refs.editUserFormRef.validate((valid) => {
         if (!valid) return
         this.$http
@@ -337,15 +337,15 @@ export default {
           )
       })
     },
-    editUserDialogClose() {
+    editUserDialogClose () {
       this.$refs.editUserFormRef.resetFields()
       this.editUserForm = {}
     },
-    fenPeiDialogClose() {
+    fenPeiDialogClose () {
       this.curFenPeiUser = {}
       this.selectRole = ''
     },
-    fenPeiRole() {
+    fenPeiRole () {
       if (!this.selectRole) return this.$message.error('请选择角色')
       this.fenPeiDialog = false
       this.$http
@@ -357,8 +357,8 @@ export default {
           },
           (err) => {}
         )
-    },
-  },
+    }
+  }
 }
 </script>
 

@@ -155,12 +155,8 @@ export default {
     wuliuInfo() {
       this.wuliuDialog = true
       this.$http.get(api.wuliu('804909574412544580')).then(
-        (res) => {
-          console.log(res)
-        },
-        (err) => {
-          console.log(err)
-        }
+        (res) => {},
+        (err) => {}
       )
     },
     editAddressDialogClose() {
