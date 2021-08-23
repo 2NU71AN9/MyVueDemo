@@ -21,4 +21,5 @@ export default {
     deleteGoods: (goodsId) => `/api/private/v1/goods/${goodsId}`,
     order: "/api/private/v1/orders",
     wuliu: (id) => `/api/private/v1/kuaidi/${id}`,
+    charts: '/api/private/v1/reports/type/1',
 }
