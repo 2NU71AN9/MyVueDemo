@@ -8,10 +8,14 @@ import './plugins/element.js'
 import './assets/css/global.css'
 import TreeTable from 'vue-table-with-tree-grid'
 
+import VueQuillEditor from 'vue-quill-editor'
+import 'quill/dist/quill.core.css' // import styles
+import 'quill/dist/quill.snow.css' // for snow theme
+import 'quill/dist/quill.bubble.css' // for bubble theme
+
 Vue.config.productionTip = false
-
 Vue.prototype.$http = request
-
+Vue.use(VueQuillEditor, /* { default global options } */ )
 Vue.component('tree-table', TreeTable)
 Vue.filter('formatDate', function(value) {
     return Moment(value).format('YYYY-MM-DD HH:mm:ss')

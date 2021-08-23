@@ -1,5 +1,6 @@
 export default {
-    baseURL: "http://106.53.73.30:8888",
+    // baseURL: "http://106.53.73.30:8888",
+    baseURL: 'https://lianghj.top:8888',
     login: "/api/private/v1/login",
     menu: "/api/private/v1/menus",
     users: '/api/private/v1/users',

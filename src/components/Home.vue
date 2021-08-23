@@ -68,8 +68,9 @@ export default {
     },
     loadMenus() {
       this.$http.get(api.menu).then(
-        ({ data: { data: menus } }) => {
-          this.menuList = menus
+        (res) => {
+          console.log(res)
+          this.menuList = res.data.data
         },
         (error) => {}
       )
