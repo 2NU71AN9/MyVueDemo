@@ -1,7 +1,7 @@
 // 发布阶段用到的插件
 const prodPlugins = []
 if (process.env.NODE_ENV === 'production') {
-    prodPlugins.push(transform - remove - console)
+    prodPlugins.push('transform-remove-console')
 }
 
 module.exports = {
@@ -16,6 +16,7 @@ module.exports = {
                 styleLibraryName: 'theme-chalk'
             }
         ],
-        ...prodPlugins
+        ...prodPlugins,
+        "@babel/plugin-syntax-dynamic-import"
     ]
 }

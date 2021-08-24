@@ -1,8 +1,18 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '../components/Login'
-import Home from '../components/Home'
-import Welcome from '../components/Welcome'
+
+// import Login from '../components/Login'
+// import Home from '../components/Home'
+// import Welcome from '../components/Welcome'
+
+// 路由懒加载
+const Login = () =>
+    import ( /* webpackChunkName: "group1" */ '../components/Login')
+const Home = () =>
+    import ( /* webpackChunkName: "group1" */ '../components/Home')
+const Welcome = () =>
+    import ( /* webpackChunkName: "group1" */ '../components/Welcome')
+
 import Users from '../components/user/Users'
 import Rights from '../components/power/Rights'
 import Roles from '../components/power/Roles'
